@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use App\Coupon;
 use App\Group;
 use ghun2\CouponCodeGenerator\Facades\CouponCodeGenerator;
@@ -19,9 +20,9 @@ class CouponController extends Controller
     {
         //
         $coupons = Coupon::paginate(100);
-        $users = DB::table('users')->get();
+        $users = DB::table('users')->pluck('name','id')->all();
 
-        return view('coupons.index', compact('coupons'));
+        return view('coupons.index', compact(['coupons','users']));
     }
 
     /**
@@ -32,7 +33,18 @@ class CouponController extends Controller
     public function create()
     {
         //
-        return view('coupons.create');
+        $role = Auth::user()->name;
+
+        // Check user role
+        switch ($role) {
+            case 'admin':
+                return view('coupons.create');
+                break;
+            default:
+                return redirect('/coupons')->with('success', 'You are not admin user');
+                break;
+        }
+        ;
     }
 
     /**
@@ -47,7 +59,7 @@ class CouponController extends Controller
         $validatedData = $request->validate([
             'coupon_code_prefix' => 'required|max:3',
         ]);
-        $prefix = $request->input('coupon_code_prefix');
+        $prefix = strtoupper($request->input('coupon_code_prefix'));
 
         $users = DB::table('users')->pluck('id');
         $groups = DB::table('groups')->max('group');
@@ -71,7 +83,7 @@ class CouponController extends Controller
 
 //        $coupon = Coupon::create($coupon_gen);
 
-        return redirect('/coupons')->with('success', 'Book is successfully saved');
+        return redirect('/coupons')->with('success', 'Coupon is successfully saved');
     }
 
     /**
@@ -80,9 +92,15 @@ class CouponController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request)
     {
         //
+        $group = strtoupper($request->input('group'));
+//
+        $coupons = Coupon::where('group',$group)->paginate(100);
+        $users = DB::table('users')->pluck('name','id')->all();
+
+        return view('coupons.index', compact(['coupons','users']));
     }
 
     /**
@@ -91,10 +109,6 @@ class CouponController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
@@ -103,10 +117,18 @@ class CouponController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
-        //
-    }
+//    public function find(Request $request)
+//    {
+//        //
+//        $validatedData = $request->validate([
+//            'coupon_code' => 'required|alpha_num|min:16|max:16',
+//        ]);
+//        $code = strtoupper($request->input('coupon_code'));
+//
+//        $found = Coupon::where('code',$code)->first();
+//
+//        var_dump($found);
+//    }
 
     /**
      * Remove the specified resource from storage.
@@ -114,8 +136,12 @@ class CouponController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy()
     {
         //
+        $coupons = Coupon::paginate(100);
+        $users = DB::table('users')->pluck('name','id')->all();
+
+        return view('coupons.destroy', compact(['coupons','users']));
     }
 }

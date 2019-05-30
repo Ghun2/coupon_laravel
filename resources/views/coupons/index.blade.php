@@ -8,47 +8,28 @@
             margin-top: 40px;
         }
     </style>
-    <div class="uper">
-        @if(session()->get('success'))
-            <div class="alert alert-success">
-                {{ session()->get('success') }}
-            </div><br />
-        @endif
-        <table class="table table-striped">
-            <thead>
-            <tr>
-                <td>ID</td>
-                <td>Coupon Code</td>
-                <td>Group</td>
-                <td>User</td>
-                <td>Usable</td>
-                <td>Used_time</td>
-{{--                <td colspan="2">Action</td>--}}
-            </tr>
-            </thead>
-            <tbody>
-            @foreach($coupons as $coupon)
-                <tr>
-                    <td>{{$coupon->id}}</td>
-                    <td>{{$coupon->code}}</td>
-                    <td>{{$coupon->group}}</td>
-                    <td>{{$coupon->name}}</td>
-                    <td>{{$coupon->useable}}</td>
-                    <td>{{$coupon->created_at}}</td>
-{{--                    <td><a href="{{ route('coupons.edit',$coupon->id)}}" class="btn btn-primary">Edit</a></td>--}}
-{{--                    <td>--}}
-{{--                        <form action="{{ route('coupons.destroy', $coupon->id)}}" method="post">--}}
-{{--                            @csrf--}}
-{{--                            @method('DELETE')--}}
-{{--                            <button class="btn btn-danger" type="submit">Delete</button>--}}
-{{--                        </form>--}}
-{{--                    </td>--}}
-                </tr>
-            @endforeach
-
-            </tbody>
-            {{ $coupons->links() }}
-        </table>
-            {{ $coupons->links() }}
-        <div>
+    <div class="card uper">
+        <div class="card-header">
+            쿠폰 코드 조회
+        </div>
+        <div class="card-body">
+            @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div><br />
+            @endif
+            <form method="post" action="{{ route('coupons.store') }}">
+                <div class="form-group">
+                    @csrf
+                    <label for="code">쿠폰 번호 : </label>
+                    <input type="text" class="form-control" name="coupon_code"/>
+                </div>
+                <button type="submit" class="btn btn-primary">Find Coupon</button>
+            </form>
+        </div>
+    </div>
 @endsection
