@@ -38,9 +38,10 @@
                                     <a class="nav-link" href="{{ url('/coupons/create') }}">쿠폰 생성</a>
                         </li>
                         <li class="nav-item">
-                            @endif
-
                             <a class="nav-link" href="{{ url('/coupons') }}">쿠폰 리스트</a>
+                        </li>
+                                @endif
+                            <a class="nav-link" href="{{ url('/coupons/show') }}">쿠폰 조회</a>
                             @endauth
                         </li>
                     @endif

@@ -92,16 +92,17 @@
                     <ul class="navbar-nav mr-auto">
                         @if (Route::has('login'))
                             <li class="nav-item">
-                            @auth
-                                @if (Auth::user()->name == 'admin')
-                                    <a class="nav-link" href="{{ url('/coupons/create') }}">쿠폰 생성</a>
+                                @auth
+                                    @if (Auth::user()->name == 'admin')
+                                        <a class="nav-link" href="{{ url('/coupons/create') }}">쿠폰 생성</a>
                             </li>
                             <li class="nav-item">
-                                @endif
-
-                                <a class="nav-link" href="{{ url('/coupons/list') }}">쿠폰 리스트</a>
-                            @endauth
+                                <a class="nav-link" href="{{ url('/coupons') }}">쿠폰 리스트</a>
                             </li>
+                        @endif
+                        <a class="nav-link" href="{{ url('/coupons/show') }}">쿠폰 조회</a>
+                        @endauth
+                        </li>
                         @endif
                     </ul>
 

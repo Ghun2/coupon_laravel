@@ -94,13 +94,12 @@ class CouponController extends Controller
      */
     public function show(Request $request)
     {
-        //
-        $group = strtoupper($request->input('group'));
-//
-        $coupons = Coupon::where('group',$group)->paginate(100);
+        $coupons = Coupon::where('code','0')->first();
         $users = DB::table('users')->pluck('name','id')->all();
 
-        return view('coupons.index', compact(['coupons','users']));
+//        var_dump($coupons);
+
+        return view('coupons.show', compact(['coupons','users']));
     }
 
     /**
@@ -117,18 +116,20 @@ class CouponController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-//    public function find(Request $request)
-//    {
-//        //
-//        $validatedData = $request->validate([
-//            'coupon_code' => 'required|alpha_num|min:16|max:16',
-//        ]);
-//        $code = strtoupper($request->input('coupon_code'));
+    public function update(Request $request, $id)
+    {
+        //
+        //
+
+        $group = strtoupper($request->input('group'));
+//        var_dump($group);
 //
-//        $found = Coupon::where('code',$code)->first();
-//
-//        var_dump($found);
-//    }
+        $coupons = Coupon::where('group',$group)->paginate(100);
+        $users = DB::table('users')->pluck('name','id')->all();
+
+        return view('coupons.index', compact(['coupons','users']));
+
+    }
 
     /**
      * Remove the specified resource from storage.
@@ -136,12 +137,17 @@ class CouponController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy()
+    public function destroy(Request $request,$id)
     {
-        //
-        $coupons = Coupon::paginate(100);
+//        //
+        $validatedData = $request->validate([
+            'coupon_code' => 'required|alpha_num|min:16|max:16',
+        ]);
+        $code = strtoupper($request->input('coupon_code'));
+
+        $coupons = Coupon::where('code',$code)->first();
         $users = DB::table('users')->pluck('name','id')->all();
 
-        return view('coupons.destroy', compact(['coupons','users']));
+        return view('coupons.show', compact(['coupons','users']));
     }
 }

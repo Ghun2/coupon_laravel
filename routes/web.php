@@ -19,15 +19,19 @@ Route::get('/', function () {
 
 Route::resource('coupons','CouponController');
 
-Route::post('/coupons/list', [
-    'as'    =>  'coupons.list',
-    function() {
-        $coupons = Coupon::paginate(100);
-        $users = DB::table('users')->pluck('name','id')->all();
+Route::get('coupons/index/{id}', 'CouponController@update');
+Route::get('coupons/show/{id}', 'CouponController@destroy');
 
-        return view('coupons.list', compact(['coupons','users']));
-    }
-]);
+//Route::post('coupons/list', [
+//    'as'    =>  'coupons.list',
+//    function() {
+//        var_dump("hello");
+//        $coupons = Coupon::paginate(100);
+//        $users = DB::table('users')->pluck('name','id')->all();
+//
+//        return view('coupons.list', compact(['coupons','users']));
+//    }
+//]);
 
 Auth::routes();
 
