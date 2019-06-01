@@ -6,7 +6,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
-
+    // User 모델은 Laravel에서 제공하는 것에서 JWT 메소드만 추가하였음
 class User extends Authenticatable implements JWTSubject
 {
     use Notifiable;

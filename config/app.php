@@ -165,6 +165,8 @@ return [
         /*
          * Package Service Providers...
          */
+        ConsoleTVs\Charts\ChartsServiceProvider::class,
+
 
         /*
          * Application Service Providers...

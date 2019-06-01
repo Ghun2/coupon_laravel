@@ -42,6 +42,9 @@
                         </li>
                                 @endif
                             <a class="nav-link" href="{{ url('/coupons/show') }}">쿠폰 조회</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url('/charts') }}">쿠폰 통계</a>
                             @endauth
                         </li>
                     @endif
